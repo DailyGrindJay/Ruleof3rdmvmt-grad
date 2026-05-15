@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services – Rule of 3rd Mvmt</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e2c27a;
+      --gold-dim: rgba(201,168,76,0.15);
+      --dark: #080808;
+      --surface: #101010;
+      --surface-2: #181818;
+      --text: #ede9e1;
+      --muted: #6a6560;
+      --rule: rgba(201,168,76,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.5; mix-blend-mode: overlay;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(8,8,8,0.94); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-image-side {
+      position: relative; overflow: hidden;
+    }
+
+    .hero-image-side img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      filter: grayscale(20%) contrast(1.1);
+      transition: transform 8s ease;
+    }
+
+    .hero-image-side::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--dark) 100%),
+                  linear-gradient(to top, var(--dark) 0%, transparent 30%);
+    }
+
+    .hero-content {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 4rem 4rem 3rem; position: relative; z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      letter-spacing: 0.06em; line-height: 1; color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 200;
+      color: var(--gold-light); display: block;
+      font-size: clamp(2rem, 4vw, 3.8rem);
+    }
+
+    .hero-body {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-style: italic; color: var(--muted);
+      max-width: 400px; line-height: 1.8; margin-bottom: 2.5rem;
+      border-left: 2px solid var(--gold); padding-left: 1.2rem;
+    }
+
+    .hero-line {
+      width: 60px; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin-bottom: 2rem;
+    }
+
+    /* GRADUATION CTA BUTTON */
+    .grad-cta {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--dark); background: var(--gold);
+      padding: 0.9rem 1.8rem; text-decoration: none;
+      transition: background 0.3s; width: fit-content;
+    }
+    .grad-cta:hover { background: var(--gold-light); }
+    .grad-cta .arrow { font-size: 0.7rem; }
+
+    /* SECTION BASE */
+    .section { position: relative; z-index: 1; }
+
+    /* DIVIDER */
+    .gold-rule {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.3;
+    }
+
+    /* SERVICE SECTIONS */
+    .service {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 70vh; position: relative; overflow: hidden;
+    }
+
+    .service.reverse { direction: rtl; }
+    .service.reverse > * { direction: ltr; }
+
+    .service-image {
+      position: relative; overflow: hidden;
+    }
+
+    .service-image img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+      filter: contrast(1.05);
+    }
+
+    .service:hover .service-image img { transform: scale(1.04); }
+
+    .service-image-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--dark) 0%, transparent 40%);
+    }
+
+    .service.reverse .service-image-overlay {
+      background: linear-gradient(to left, var(--dark) 0%, transparent 40%);
+    }
+
+    .service-content {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 4rem; position: relative; z-index: 2;
+    }
+
+    .service-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem; color: rgba(201,168,76,0.08);
+      line-height: 1; margin-bottom: -1rem; letter-spacing: 0.05em;
+    }
+
+    .service-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.45rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+
+    .service-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: 0.08em; line-height: 1.1;
+      color: var(--text); margin-bottom: 1.4rem;
+    }
+
+    .service-body {
+      font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+      color: #9a9088; line-height: 1.85;
+      max-width: 420px; margin-bottom: 2rem;
+    }
+
+    .service-body strong {
+      color: var(--gold-light); font-weight: 400; font-style: italic;
+    }
+
+    /* PRICING DISPLAY */
+    .price-block {
+      display: flex; align-items: baseline; gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 200; color: var(--text); line-height: 1;
+    }
+
+    .price-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.42rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .price-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.42rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold); margin-top: 0.4rem;
+    }
+
+    /* INQUIRY BUTTON */
+    .inquiry-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: 0.85rem 1.6rem; text-decoration: none;
+      transition: background 0.3s, color 0.3s; width: fit-content;
+    }
+    .inquiry-btn:hover { background: var(--gold); color: var(--dark); }
+
+    /* FULL WIDTH SERVICE (no image) */
+    .service-full {
+      padding: 6rem 8rem; background: var(--surface);
+      position: relative; overflow: hidden;
+    }
+
+    .service-full::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.25;
+    }
+
+    .service-full-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+      align-items: center;
+    }
+
+    .service-full-left {}
+
+    .service-full-right {
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+
+    .feature-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .feature-item:last-child { border-bottom: none; }
+
+    .feature-icon {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; color: var(--gold);
+      letter-spacing: 0.1em; flex-shrink: 0; margin-top: 0.2rem;
+    }
+
+    .feature-text { font-size: 0.92rem; color: #8a8078; line-height: 1.7; }
+    .feature-text strong { color: var(--text); font-weight: 400; }
+
+    /* GRADUATION BAND */
+    .grad-band {
+      background: var(--surface-2);
+      padding: 4rem 8rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .grad-band-text {}
+
+    .grad-band-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.45rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.8rem;
+    }
+
+    .grad-band-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-style: italic; font-weight: 200; color: var(--text);
+      line-height: 1.2; max-width: 500px;
+    }
+
+    /* CLOSING CTA */
+    .closing {
+      padding: 8rem 3rem; text-align: center; position: relative; z-index: 1;
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 5rem;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+
+    .closing-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 200; font-style: italic;
+      color: var(--text); line-height: 1.2; margin-bottom: 1rem;
+    }
+
+    .closing-title strong {
+      font-style: normal; font-weight: 300; color: var(--gold-light);
+    }
+
+    .closing-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 3rem;
+    }
+
+    .closing-btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--dark); background: var(--gold);
+      padding: 1rem 2.8rem; text-decoration: none;
+      transition: background 0.3s;
+    }
+    .closing-btn:hover { background: var(--gold-light); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1;
+    }
+
+    .footer-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.45rem; letter-spacing: 0.12em; color: var(--muted);
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      .hero { grid-template-columns: 1fr; }
+      .hero-image-side { height: 50vh; }
+      .hero-content { padding: 4rem 1.5rem 3rem; }
+
+      .service, .service.reverse {
+        grid-template-columns: 1fr; direction: ltr;
+      }
+      .service-image { height: 50vw; min-height: 260px; }
+      .service-image-overlay,
+      .service.reverse .service-image-overlay {
+        background: linear-gradient(to top, var(--dark) 0%, transparent 50%);
+      }
+      .service-content { padding: 3rem 1.5rem; }
+
+      .service-full { padding: 4rem 1.5rem; }
+      .service-full-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+      .grad-band { flex-direction: column; padding: 3rem 1.5rem; }
+
+      .closing { padding: 5rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="https://ruleof3rdmvmt.com" class="nav-brand">Rule of 3rd Mvmt</a>
+    <ul class="nav-links">
+      <li><a href="https://ruleof3rdmvmt.com/gallery/">Gallery</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/260-2/">Film Work</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/about/">The Curator</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/connect/">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="section">
+    <div class="hero">
+      <div class="hero-image-side">
+        <img
+          src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/onset.jpeg"
+          alt="On set with Daily Grind"
+          id="hero-img"
+        />
+      </div>
+      <div class="hero-content">
+        <div class="hero-label reveal">Rule of 3rd Mvmt &nbsp;&middot;&nbsp; Services</div>
+        <h1 class="hero-title reveal">
+          Every life has a story.
+          <em>We tell it at the highest level.</em>
+        </h1>
+        <div class="hero-line reveal"></div>
+        <p class="hero-body reveal">
+          This is not photography. This is not videography. This is your story,
+          produced with the precision and intention it deserves.
+        </p>
+        <a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/Grad-Services.html" class="grad-cta reveal">
+          View Graduation Services <span class="arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- SERVICE 1: TRAVEL CINEMATOGRAPHY -->
+  <section class="section">
+    <div class="service">
+      <div class="service-image" style="display:grid;grid-template-rows:1fr 1fr;gap:2px;">
+        <div style="position:relative;overflow:hidden;">
+          <img
+            src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Travel.jpeg"
+            alt="Travel Cinematography"
+            style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.16,1,0.3,1);"
+          />
+        </div>
+        <div style="position:relative;overflow:hidden;">
+          <img
+            src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Travel2RadioCity.JPG"
+            alt="Travel Cinematography Radio City"
+            style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.16,1,0.3,1);"
+          />
+        </div>
+        <div class="service-image-overlay"></div>
+      </div>
+      <div class="service-content">
+        <div class="service-number reveal">01</div>
+        <div class="service-label reveal">Cinematography</div>
+        <h2 class="service-title reveal">Travel<br>Cinematography</h2>
+        <p class="service-body reveal">
+          Some stories <strong>refuse to stay in one place.</strong>
+          Whether you are crossing an ocean or crossing a state line,
+          we document the journey the way it deserves to be remembered.
+          Not a travel log. A film about a life being fully lived.
+        </p>
+        <a href="https://ruleof3rdmvmt.com/connect/" class="inquiry-btn reveal">
+          Start a Conversation &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- SERVICE 2: EVENT CINEMATOGRAPHY -->
+  <section class="section">
+    <div class="service reverse">
+      <div class="service-image" style="display:grid;grid-template-rows:1fr 1fr;gap:2px;">
+        <div style="position:relative;overflow:hidden;">
+          <img
+            src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Event1a.JPG"
+            alt="Event Cinematography"
+            style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.16,1,0.3,1);"
+          />
+        </div>
+        <div style="position:relative;overflow:hidden;">
+          <img
+            src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Event2.jpeg"
+            alt="Jadakiss Live Event"
+            style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s cubic-bezier(0.16,1,0.3,1);"
+          />
+        </div>
+        <div class="service-image-overlay"></div>
+      </div>
+      <div class="service-content">
+        <div class="service-number reveal">02</div>
+        <div class="service-label reveal">Cinematography</div>
+        <h2 class="service-title reveal">Event<br>Cinematography</h2>
+        <p class="service-body reveal">
+          Every event has <strong>moments inside the moment</strong> that
+          most cameras miss. We position ourselves where the story is
+          actually happening. Professional color grade, cinematic delivery,
+          and a final film that captures what the room felt like, not just
+          what it looked like.
+        </p>
+        <div class="price-block reveal">
+          <div>
+            <div class="price-amount">$1,200</div>
+            <div class="price-label">starting rate</div>
+            <div class="price-note">Inquiry for full production packages</div>
+          </div>
+        </div>
+        <a href="https://ruleof3rdmvmt.com/connect/" class="inquiry-btn reveal">
+          Book Your Event &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- SERVICE 3: COMMERCIAL BRAND FILMING -->
+  <section class="section">
+    <div class="service">
+      <div class="service-image">
+        <img
+          src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/BrandProductShoot.jpg"
+          alt="Commercial Brand Filming"
+        />
+        <div class="service-image-overlay"></div>
+      </div>
+      <div class="service-content">
+        <div class="service-number reveal">03</div>
+        <div class="service-label reveal">Production</div>
+        <h2 class="service-title reveal">Commercial<br>Brand Filming</h2>
+        <p class="service-body reveal">
+          Your brand has a voice. <strong>We give it something to say.</strong>
+          From concept to color grade, we build commercial content that
+          does not just represent your brand but elevates how the world
+          perceives it. Every frame is intentional. Every cut earns its place.
+        </p>
+        <a href="https://ruleof3rdmvmt.com/connect/" class="inquiry-btn reveal">
+          Inquire About Your Brand &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- SERVICE 4: LIFE EVENT PHOTOGRAPHY -->
+  <section class="section">
+    <div class="service reverse">
+      <div class="service-image">
+        <img
+          src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/portrait.jpeg"
+          alt="Life Event Photography"
+        />
+        <div class="service-image-overlay"></div>
+      </div>
+      <div class="service-content">
+        <div class="service-number reveal">04</div>
+        <div class="service-label reveal">Photography</div>
+        <h2 class="service-title reveal">Life Event<br>Photography</h2>
+        <p class="service-body reveal">
+          Milestones deserve more than a camera pointed at them.
+          <strong>They deserve to be felt in the frame.</strong>
+          From themed portrait sessions to major life moments, every image
+          we deliver is a finished work. No raw files, no guessing.
+          Just your story, told at the highest level.
+        </p>
+        <div class="price-block reveal">
+          <div>
+            <div class="price-amount">$325</div>
+            <div class="price-label">starting rate per session</div>
+            <div class="price-note">Seasonal portrait experiences available &mdash; inquire for access</div>
+          </div>
+        </div>
+        <a href="https://ruleof3rdmvmt.com/connect/" class="inquiry-btn reveal">
+          Book Your Session &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- SERVICE 5: VISUAL BRAND STRATEGY -->
+  <section class="section">
+    <div class="service-full">
+      <div class="service-full-inner">
+        <div class="service-full-left">
+          <div class="service-number reveal" style="font-size:6rem;">05</div>
+          <div class="service-label reveal">Strategy</div>
+          <h2 class="service-title reveal" style="font-size:clamp(2rem,4vw,3.5rem);">Visual Brand<br>Strategy</h2>
+          <p class="service-body reveal" style="max-width:100%;">
+            Before you tell your story, <strong>you have to decide how it looks.</strong>
+            We work with individuals and brands to define their visual identity,
+            establish their aesthetic language, and build a presence that is
+            immediately recognizable and impossible to ignore.
+            This is where your story begins.
+          </p>
+          <a href="https://ruleof3rdmvmt.com/connect/" class="inquiry-btn reveal" style="margin-top:1rem;">
+            Build Your Visual Identity &rarr;
+          </a>
+        </div>
+        <div class="service-full-right reveal">
+          <div class="feature-item">
+            <div class="feature-icon">01</div>
+            <div class="feature-text">
+              <strong>Visual Identity Development</strong><br>
+              Defining your aesthetic language, color philosophy, and the visual
+              principles that govern how your brand shows up everywhere.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">02</div>
+            <div class="feature-text">
+              <strong>Content Direction</strong><br>
+              Building the shot style, framing approach, and creative direction
+              that makes every piece of content feel like it belongs to the same story.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">03</div>
+            <div class="feature-text">
+              <strong>Platform Presence Strategy</strong><br>
+              Translating your visual identity across platforms so your audience
+              recognizes you before they even read your name.
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">04</div>
+            <div class="feature-text">
+              <strong>Creative Consultation</strong><br>
+              Ongoing strategic guidance to ensure every creative decision
+              moves your story forward with intention.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRADUATION BAND -->
+  <div class="grad-band">
+    <div class="grad-band-text">
+      <div class="grad-band-label">Also Available</div>
+      <div class="grad-band-title">
+        Graduation &amp; milestone portrait sessions,<br>
+        individually crafted for the Class of 2025&ndash;2026.
+      </div>
+    </div>
+    <a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/Grad-Services.html" class="grad-cta">
+      View Graduation Services <span class="arrow">&rarr;</span>
+    </a>
+  </div>
+
+  <!-- CLOSING CTA -->
+  <section class="closing">
+    <h2 class="closing-title reveal">
+      Your story is worth telling.<br>
+      <strong>Let us produce it.</strong>
+    </h2>
+    <p class="closing-sub reveal">NJ &middot; NYC &middot; Tri-State &middot; Worldwide</p>
+    <a href="https://ruleof3rdmvmt.com/connect/" class="closing-btn reveal">Start the Conversation</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">Rule of 3rd Mvmt &nbsp;&middot;&nbsp; Daily Grind</div>
+    <div class="footer-copy">&copy; Daily Grind &nbsp;&middot;&nbsp; jolonfranklinllc@gmail.com</div>
+  </footer>
+
+  <script>
+    // Hero image fallback
+    document.getElementById('hero-img').onerror = function() {
+      this.parentElement.style.background = 'linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%)';
+      this.style.display = 'none';
+    };
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
