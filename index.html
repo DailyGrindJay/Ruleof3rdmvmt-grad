@@ -20,6 +20,10 @@
       position: fixed; inset: 0; background: var(--dark); z-index: 9999;
       display: flex; align-items: center; justify-content: center;
       flex-direction: column; cursor: pointer;
+      background-image: url('https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/JayFilming2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
     #intro::before {
       content: ''; position: absolute; inset: 0;
@@ -34,7 +38,9 @@
     }
     #intro::after {
       content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 75% 75% at 50% 50%, transparent 30%, rgba(0,0,0,0.9) 100%);
+      background: 
+        rgba(0,0,0,0.78),
+        radial-gradient(ellipse 75% 75% at 50% 50%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 100%);
       pointer-events: none; z-index: 0;
     }
 
@@ -140,6 +146,7 @@
     .tagline-main span, .tagline-question span {
       display: inline-block; opacity: 0; transform: translateY(110%);
       transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      white-space: pre;
     }
 
     .skip {
@@ -167,12 +174,12 @@
     <div class="ring-logo-wrap">
       <svg id="ring-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <path id="textCirclePath" d="M 150,150 m -116,0 a 116,116 0 1,1 232,0 a 116,116 0 1,1 -232,0"/>
+          <path id="textCirclePath" d="M 150,150 m -108,0 a 108,108 0 1,1 216,0 a 108,108 0 1,1 -216,0"/>
         </defs>
-        <circle id="ring-circle-path" cx="150" cy="150" r="116"/>
+        <circle id="ring-circle-path" cx="150" cy="150" r="108"/>
         <text id="ring-text">
           <textPath href="#textCirclePath" startOffset="0%">
-            EVERY LIFE HAS A STORY WORTH TELLING &nbsp;&bull;&nbsp; THIS IS WHERE YOURS GETS TOLD &nbsp;&bull;&nbsp;
+            EVERY LIFE HAS A STORY &nbsp;&bull;&nbsp; THIS IS WHERE YOURS GETS TOLD &nbsp;&bull;&nbsp;
           </textPath>
         </text>
       </svg>
@@ -198,8 +205,8 @@
 <script>
   const intro = document.getElementById('intro');
   const lines = [
-    { id: 'tag-line1', text: 'Every life has a story worth telling.' },
-    { id: 'tag-line2', text: 'At the highest level.' },
+    { id: 'tag-line1', text: 'Every life has a story worth' },
+    { id: 'tag-line2', text: 'telling at the highest level.' },
     { id: 'tag-line3', text: 'This is where yours gets told.' },
   ];
 
