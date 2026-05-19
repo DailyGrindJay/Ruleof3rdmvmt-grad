@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery – Rule of 3rd Mvmt</title>
+  <meta name="description" content="Rule of 3rd Mvmt – Filmmaker, Cinematographer, Photographer Jay Franklin. Every life has a story worth telling at the highest level." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e2c27a;
+      --dark: #080808;
+      --surface: #0f0f0f;
+      --surface-2: #161616;
+      --text: #ede9e1;
+      --muted: #6a6560;
+      --rule: rgba(201,168,76,0.2);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.5; mix-blend-mode: overlay;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(8,8,8,0.96); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      transition: padding 0.4s ease;
+    }
+    nav.scrolled { padding: 1rem 3rem; }
+
+    .nav-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 22px; height: 1px; background: var(--gold); transition: all 0.3s; }
+
+    /* ── MANIFESTO ── */
+    .hero-manifesto {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 10rem 2rem 5rem;
+      position: relative; z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Jay background photo — 15% opacity (85% faded) */
+    .hero-manifesto::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/JayEquipment2.jpg');
+      background-size: cover;
+      background-position: center 25%;
+      background-repeat: no-repeat;
+      opacity: 0.65;
+      filter: grayscale(40%);
+      pointer-events: none;
+    }
+
+    /* Dark vignette on top of the photo so quote remains readable */
+    .hero-manifesto::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse 70% 70% at 50% 50%, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.85) 100%);
+      pointer-events: none;
+    }
+
+    /* All manifesto children need to sit above the pseudo-elements */
+    .hero-manifesto > * { position: relative; z-index: 2; }
+
+    .manifesto-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.48rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 3rem;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .manifesto-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-style: italic; font-weight: 200;
+      color: var(--text); line-height: 1.55;
+      max-width: 820px; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(24px);
+      animation: fadeUp 1s 0.55s forwards;
+    }
+
+    .manifesto-quote em { color: var(--gold-light); }
+
+    .manifesto-attr {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.44rem; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 1rem;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .manifesto-attr::before { content: ''; display: block; width: 40px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+    .manifesto-attr::after  { content: ''; display: block; width: 40px; height: 1px; background: linear-gradient(to left,  transparent, var(--gold)); }
+
+    .manifesto-scroll-hint {
+      position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      opacity: 0; animation: fadeUp 0.8s 1.4s forwards;
+      z-index: 2;
+    }
+
+    .manifesto-scroll-hint span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.38rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* GOLD RULE */
+    .gold-rule {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0.25; position: relative; z-index: 1;
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      position: relative; z-index: 1;
+      padding: 3.5rem 3rem 1.5rem;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+
+    .section-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.44rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.5rem;
+    }
+
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: 0.07em; color: var(--text); line-height: 1;
+    }
+
+    /* "em" inside section heading — italic Cormorant to match the gold sub-text pattern elsewhere */
+    .section-heading em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 200;
+      color: var(--gold-light); font-size: 0.72em;
+    }
+
+    .section-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem; color: rgba(201,168,76,0.07);
+      line-height: 1; letter-spacing: 0.05em;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section { position: relative; z-index: 1; padding-bottom: 4rem; }
+
+    /* 4-col grid, tall portrait cells */
+    .gallery-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3px;
+      padding: 0 3px;
+      margin-bottom: 3px;
+    }
+
+    .gallery-cell {
+      position: relative; overflow: hidden;
+      aspect-ratio: 3 / 5;
+      cursor: pointer;
+      background: var(--surface);
+    }
+
+    .gallery-cell img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.45s ease;
+      filter: brightness(0.85);
+      display: block;
+    }
+
+    .gallery-cell:hover img { transform: scale(1.07); filter: brightness(1.02); }
+
+    .cell-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.06) 45%, transparent 68%);
+      transition: opacity 0.4s;
+    }
+
+    .gallery-cell:hover .cell-overlay { opacity: 0.5; }
+
+    .cell-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.1rem 0.9rem 0.9rem;
+    }
+
+    /* cell-category: Cormorant italic, same visual weight as Place / Thing / People */
+    .cell-category {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(0.85rem, 1vw, 1rem);
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      margin-bottom: 0.22rem;
+      opacity: 0; transform: translateY(5px);
+      transition: opacity 0.3s 0.04s, transform 0.3s 0.04s;
+    }
+
+    .gallery-cell:hover .cell-category { opacity: 1; transform: translateY(0); }
+
+    .cell-rule {
+      width: 0; height: 1px; background: var(--gold);
+      transition: width 0.35s 0.07s cubic-bezier(0.16,1,0.3,1);
+      margin-bottom: 0.3rem;
+    }
+
+    .gallery-cell:hover .cell-rule { width: 22px; }
+
+    .cell-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.8rem, 1vw, 1rem);
+      font-weight: 300; color: var(--text);
+      letter-spacing: 0.02em; line-height: 1.2; opacity: 0.85;
+    }
+
+    /* INTERSTITIAL */
+    .gallery-interstitial {
+      position: relative; z-index: 1;
+      padding: 3.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface);
+      border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+      margin: 6px 0;
+    }
+
+    .interstitial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+      font-style: italic; font-weight: 200;
+      color: var(--muted); max-width: 480px; line-height: 1.6;
+    }
+
+    .interstitial-text strong { color: var(--gold-light); font-style: normal; font-weight: 300; }
+
+    .interstitial-stat { text-align: right; }
+
+    .stat-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem; color: var(--gold);
+      letter-spacing: 0.05em; line-height: 1;
+    }
+
+    .stat-small {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.4rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.25rem;
+    }
+
+    /* ── FILM SECTION ── */
+    .film-section {
+      position: relative; z-index: 1;
+      padding: 5rem 3rem 6rem;
+      background: var(--surface);
+    }
+
+    .film-section::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 4rem;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+
+    .film-header { text-align: center; margin-bottom: 4rem; }
+
+    .film-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.44rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+
+    .film-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.07em; color: var(--text); line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .film-title em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 200;
+      color: var(--gold-light); display: block;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+    }
+
+    .film-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      font-style: italic; font-weight: 200;
+      color: var(--muted); max-width: 500px; margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+    }
+
+    .film-cell { position: relative; background: var(--surface-2); overflow: hidden; }
+
+    .film-embed {
+      position: relative; width: 100%; padding-top: 56.25%;
+      background: #0a0a0a;
+    }
+
+    .film-embed iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+    }
+
+    .film-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.8rem;
+      background: var(--surface-2);
+      border: 1px solid rgba(201,168,76,0.08);
+    }
+
+    .film-placeholder-icon {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(201,168,76,0.28); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .film-placeholder-icon::after {
+      content: '';
+      border-left: 13px solid rgba(201,168,76,0.38);
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      margin-left: 3px;
+    }
+
+    .film-placeholder-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.36rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(201,168,76,0.3);
+    }
+
+    .film-meta {
+      padding: 0.9rem 1.1rem 1.1rem;
+      border-top: 1px solid rgba(201,168,76,0.07);
+    }
+
+    .film-meta-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.35rem; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.28rem;
+    }
+
+    .film-meta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 300; color: var(--text); line-height: 1.25;
+    }
+
+    .film-meta-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.35rem; letter-spacing: 0.1em;
+      color: var(--muted); margin-top: 0.3rem; line-height: 1.65;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(5,5,5,0.97);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .lightbox.open { opacity: 1; pointer-events: all; }
+
+    .lightbox-inner {
+      position: relative; max-width: 90vw; max-height: 90vh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .lightbox-img {
+      max-width: 90vw; max-height: 78vh; object-fit: contain;
+      transform: scale(0.96); opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
+    }
+
+    .lightbox.open .lightbox-img { transform: scale(1); opacity: 1; }
+
+    .lightbox-meta { margin-top: 1.1rem; text-align: center; }
+
+    .lightbox-category {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.4rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.35rem;
+    }
+
+    .lightbox-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-style: italic; font-weight: 200; color: var(--text);
+    }
+
+    .lightbox-close {
+      position: absolute; top: -2.5rem; right: 0;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.3s;
+    }
+
+    .lightbox-close:hover { color: var(--gold); }
+
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; color: var(--muted); transition: color 0.3s; padding: 1rem;
+    }
+
+    .lightbox-nav:hover { color: var(--gold); }
+    .lightbox-prev { left: -4rem; }
+    .lightbox-next { right: -4rem; }
+
+    /* CLOSING */
+    .closing {
+      position: relative; z-index: 1;
+      padding: 8rem 3rem; text-align: center; background: var(--surface-2);
+    }
+
+    .closing::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 5rem;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+    }
+
+    .closing-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 200; font-style: italic;
+      color: var(--text); line-height: 1.35; margin-bottom: 0.8rem;
+    }
+
+    .closing-title strong { font-style: normal; font-weight: 300; color: var(--gold-light); }
+
+    .closing-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.48rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 3rem;
+    }
+
+    .closing-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-block; font-family: 'Space Mono', monospace;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dark); background: var(--gold);
+      padding: 1rem 2.4rem; text-decoration: none; transition: background 0.3s;
+    }
+    .btn-primary:hover { background: var(--gold-light); }
+
+    .btn-secondary {
+      display: inline-block; font-family: 'Space Mono', monospace;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: 1rem 2.4rem; text-decoration: none; transition: all 0.3s;
+    }
+    .btn-secondary:hover { background: var(--gold); color: var(--dark); }
+
+    footer {
+      border-top: 1px solid var(--rule); padding: 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1;
+    }
+
+    .footer-brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.44rem; letter-spacing: 0.12em; color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .gallery-row { grid-template-columns: repeat(3, 1fr); }
+      .film-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; flex-direction: column; gap: 1.2rem; position: absolute; top: 100%; left: 0; right: 0; background: rgba(8,8,8,0.98); padding: 1.5rem; border-bottom: 1px solid var(--rule); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+      .hero-manifesto { padding: 8rem 1.5rem 4rem; }
+      .manifesto-quote { font-size: clamp(1.3rem, 5vw, 2rem); }
+      .gallery-row { grid-template-columns: repeat(2, 1fr); }
+      .section-header { padding: 2.5rem 1.5rem 1rem; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .film-section { padding: 4rem 1.5rem 5rem; }
+      .film-grid { grid-template-columns: 1fr; }
+      .gallery-interstitial { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 1.5rem; }
+      .interstitial-stat { text-align: center; }
+      .closing { padding: 5rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+      .lightbox-prev { left: -2rem; }
+      .lightbox-next { right: -2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .lightbox-prev, .lightbox-next { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="main-nav">
+    <a href="https://ruleof3rdmvmt.com" class="nav-brand">Rule of 3rd Mvmt</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="https://ruleof3rdmvmt.com/gallery/" class="active">Gallery</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/services/">Services</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/connect/">Connect</a></li>
+      <li><a href="https://ruleof3rdmvmt.com/curator/">The Curator</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MANIFESTO HERO — Jay equipment shot at 15% opacity behind quote -->
+  <section class="hero-manifesto">
+    <div class="manifesto-label">Rule of 3rd Mvmt &nbsp;&middot;&nbsp; Gallery</div>
+    <blockquote class="manifesto-quote">
+      The art of storytelling is one of the few forces capable of
+      <em>expanding how we see the world</em>
+      and the people in it.
+    </blockquote>
+    <div class="manifesto-attr">Jay Franklin &nbsp;&middot;&nbsp; Filmmaker</div>
+    <div class="manifesto-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section" id="gallery">
+
+    <div class="section-header reveal">
+      <div>
+        <div class="section-eyebrow">Still Work</div>
+        <h2 class="section-heading">Person &nbsp;<em>&middot; Place &middot; Thing</em></h2>
+      </div>
+      <div class="section-count">01</div>
+    </div>
+
+    <!--
+      TOTAL PHOTOS: 20
+      Rows of 4 = 5 clean rows, no orphans.
+
+      Recognition order (top):
+        Cory Booker, DaBaby, Jadakiss, Akademics  (row 1)
+
+      Pattern cycles: Person · Thing · Place · Person / Thing · Place · Person · Thing / etc.
+
+      ROW 1  — Person · Person · Person · Person  (all high-recognition names, front-loaded)
+      ROW 2  — Thing · Place · Person · Thing
+      ROW 3  — Place · People · Thing · Place
+      ROW 4  — Person · Place · People · Person
+      ROW 5  — Thing · Place · Person · Thing  (clean close)
+    -->
+
+    <!-- ROW 1 — High recognition leads -->
+    <div class="gallery-row reveal">
+      <div class="gallery-cell" data-index="0" data-category="Person" data-title="Senator Cory Booker">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/CoryBookerHug_Person_Color.png" alt="Senator Cory Booker" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Senator Cory Booker</div></div>
+      </div>
+      <div class="gallery-cell" data-index="1" data-category="Person" data-title="DaBaby">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Rapper_DaBaby_Person_BW.jpg" alt="DaBaby" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">DaBaby</div></div>
+      </div>
+      <div class="gallery-cell" data-index="2" data-category="Person" data-title="Jadakiss">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Rapper_Jadakiss_Person_Color.jpg" alt="Jadakiss" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Jadakiss</div></div>
+      </div>
+      <div class="gallery-cell" data-index="3" data-category="Person" data-title="Akademics">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Person_Akademics_Color.jpg" alt="Akademics" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Akademics</div></div>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Thing · Place · Person · Thing -->
+    <div class="gallery-row reveal">
+      <div class="gallery-cell" data-index="4" data-category="Thing" data-title="Bel Air">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Belaircar_Thing_BW.jpg" alt="Bel Air" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Thing</div><div class="cell-rule"></div><div class="cell-title">Bel Air</div></div>
+      </div>
+      <div class="gallery-cell" data-index="5" data-category="Place" data-title="Radio City">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Travel2RadioCity.JPG" alt="Radio City" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Place</div><div class="cell-rule"></div><div class="cell-title">Radio City</div></div>
+      </div>
+      <div class="gallery-cell" data-index="6" data-category="Person" data-title="Kevon Stage">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Person_KevonStage_Color.jpg" alt="Kevon Stage" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Kevon Stage</div></div>
+      </div>
+      <div class="gallery-cell" data-index="7" data-category="Thing" data-title="Chess Game">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Chessgame_Thing_Color.jpg" alt="Chess Game" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Thing</div><div class="cell-rule"></div><div class="cell-title">Chess Game</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- FILM SECTION — moved up, sits between rows 1+2 and rows 3-5 -->
+  <section class="film-section" id="film">
+
+    <div class="film-header reveal">
+      <div class="film-eyebrow">Rule of 3rd Mvmt &nbsp;&middot;&nbsp; Moving Image</div>
+      <h2 class="film-title">
+        Film Work
+        <em>Stories in Motion</em>
+      </h2>
+      <p class="film-subtitle">
+        Where the still image becomes sequence, rhythm, and time.
+        Fourteen years of cinematic work across documentary, commercial, and independent film.
+      </p>
+    </div>
+
+    <!--
+      TO ACTIVATE A SLOT replace the film-placeholder div with:
+
+      VIMEO:
+      <iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?title=0&byline=0&portrait=0"
+        allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+      YOUTUBE:
+      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    -->
+
+    <div class="film-grid reveal">
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Short Film</div>
+          <div class="film-meta-title">Showrunners</div>
+          <div class="film-meta-desc">Original short film series &middot; Creator &amp; Director</div>
+        </div>
+      </div>
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Documentary</div>
+          <div class="film-meta-title">Title Here</div>
+          <div class="film-meta-desc">Description here</div>
+        </div>
+      </div>
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Commercial</div>
+          <div class="film-meta-title">Title Here</div>
+          <div class="film-meta-desc">Description here</div>
+        </div>
+      </div>
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Event</div>
+          <div class="film-meta-title">Title Here</div>
+          <div class="film-meta-desc">Description here</div>
+        </div>
+      </div>
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Broadcast</div>
+          <div class="film-meta-title">Title Here</div>
+          <div class="film-meta-desc">Description here</div>
+        </div>
+      </div>
+
+      <div class="film-cell">
+        <div class="film-embed">
+          <div class="film-placeholder"><div class="film-placeholder-icon"></div><div class="film-placeholder-text">Video Coming Soon</div></div>
+        </div>
+        <div class="film-meta">
+          <div class="film-meta-label">Campaign</div>
+          <div class="film-meta-title">Title Here</div>
+          <div class="film-meta-desc">Description here</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- GALLERY CONTINUED — rows 3–5 -->
+  <section class="gallery-section" id="gallery-2">
+
+    <!-- INTERSTITIAL -->
+    <div class="gallery-interstitial reveal">
+      <p class="interstitial-text">
+        Every frame is a choice. Every subject carries a story that existed
+        <strong>before the camera arrived</strong> and will outlast it.
+      </p>
+      <div class="interstitial-stat">
+        <div class="stat-big">14</div>
+        <div class="stat-small">Years of Visual Language</div>
+      </div>
+    </div>
+
+    <!-- ROW 3 — Place · Thing · People · Place -->
+    <div class="gallery-row reveal">
+      <div class="gallery-cell" data-index="8" data-category="Place" data-title="Puerto Rico">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/PuertoRico_Place_Color.jpg" alt="Puerto Rico" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Place</div><div class="cell-rule"></div><div class="cell-title">Puerto Rico</div></div>
+      </div>
+      <div class="gallery-cell" data-index="9" data-category="Thing" data-title="Cocktail">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Cocktail_Thing_BW.jpg" alt="Cocktail" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Thing</div><div class="cell-rule"></div><div class="cell-title">Cocktail</div></div>
+      </div>
+      <div class="gallery-cell" data-index="10" data-category="People" data-title="Hoop Dreams, NY">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/HoopDreamsNY_People_BW.jpg" alt="Hoop Dreams NY" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">People</div><div class="cell-rule"></div><div class="cell-title">Hoop Dreams, NY</div></div>
+      </div>
+      <div class="gallery-cell" data-index="11" data-category="Place" data-title="Las Vegas">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/LasVegas_Place_BW.jpg" alt="Las Vegas" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Place</div><div class="cell-rule"></div><div class="cell-title">Las Vegas</div></div>
+      </div>
+    </div>
+
+    <!-- ROW 4 — Person · Thing · Place · People -->
+    <div class="gallery-row reveal">
+      <div class="gallery-cell" data-index="12" data-category="Person" data-title="The Fighter">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/MMA1_Person_BW.jpg" alt="MMA Fighter" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">The Fighter</div></div>
+      </div>
+      <div class="gallery-cell" data-index="13" data-category="Thing" data-title="Mercedes Truck">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/MercedesTruck_Thing_BW.jpg" alt="Mercedes Truck" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Thing</div><div class="cell-rule"></div><div class="cell-title">Mercedes Truck</div></div>
+      </div>
+      <div class="gallery-cell" data-index="14" data-category="Place" data-title="NY Courts">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/NY_courts_Place_BW.jpg" alt="NY Courts" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Place</div><div class="cell-rule"></div><div class="cell-title">NY Courts</div></div>
+      </div>
+      <div class="gallery-cell" data-index="15" data-category="People" data-title="NY Ballers">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/NYBallers_People_Color.jpg" alt="NY Ballers" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">People</div><div class="cell-rule"></div><div class="cell-title">NY Ballers</div></div>
+      </div>
+    </div>
+
+    <!-- ROW 5 — Person · Place · Person · Thing -->
+    <div class="gallery-row reveal">
+      <div class="gallery-cell" data-index="16" data-category="Person" data-title="Car Guy">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/CarGuy_Person_Color.jpg" alt="Car Guy" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Car Guy</div></div>
+      </div>
+      <div class="gallery-cell" data-index="17" data-category="Place" data-title="San Juan">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/SanJuan_Place_Color.jpg" alt="San Juan" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Place</div><div class="cell-rule"></div><div class="cell-title">San Juan</div></div>
+      </div>
+      <div class="gallery-cell" data-index="18" data-category="Person" data-title="Fountain Man">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/fountainman_color_person.jpg" alt="Fountain Man" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Person</div><div class="cell-rule"></div><div class="cell-title">Fountain Man</div></div>
+      </div>
+      <div class="gallery-cell" data-index="19" data-category="Thing" data-title="Red Interior">
+        <img src="https://raw.githubusercontent.com/DailyGrindJay/Ruleof3rdmvmt-grad/main/Thing_CarRedInterior_Color.jpg" alt="Red Interior" loading="lazy" />
+        <div class="cell-overlay"></div>
+        <div class="cell-label"><div class="cell-category">Thing</div><div class="cell-rule"></div><div class="cell-title">Red Interior</div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="gold-rule"></div>
+
+  <!-- CLOSING -->
+  <section class="closing">
+    <h2 class="closing-title reveal">
+      Every life has a story worth telling.<br>
+      <strong>This is where yours gets told.</strong>
+    </h2>
+    <p class="closing-sub reveal">New Jersey &nbsp;&middot;&nbsp; New York &nbsp;&middot;&nbsp; Tri-State &nbsp;&middot;&nbsp; Worldwide</p>
+    <div class="closing-btns reveal">
+      <a href="https://ruleof3rdmvmt.com/connect/" class="btn-primary">Start the Conversation</a>
+      <a href="https://ruleof3rdmvmt.com/services/" class="btn-secondary">View Services</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">Rule of 3rd Mvmt &nbsp;&middot;&nbsp; Daily Grind</div>
+    <div class="footer-copy">&copy; Daily Grind &nbsp;&middot;&nbsp; jolonfranklinllc@gmail.com</div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lb-close">Close &times;</button>
+      <button class="lightbox-nav lightbox-prev" id="lb-prev">&#8592;</button>
+      <img class="lightbox-img" id="lb-img" src="" alt="" />
+      <button class="lightbox-nav lightbox-next" id="lb-next">&#8594;</button>
+      <div class="lightbox-meta">
+        <div class="lightbox-category" id="lb-category"></div>
+        <div class="lightbox-title" id="lb-title"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      document.getElementById('nav-links').classList.toggle('open');
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Lightbox
+    const cells   = document.querySelectorAll('.gallery-cell');
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
+    const lbCat   = document.getElementById('lb-category');
+    const lbTitle = document.getElementById('lb-title');
+    let currentIndex = 0;
+
+    const galleryData = Array.from(cells).map(cell => ({
+      src:      cell.querySelector('img').src,
+      alt:      cell.querySelector('img').alt,
+      category: cell.dataset.category,
+      title:    cell.dataset.title,
+    }));
+
+    function openLightbox(index) {
+      currentIndex = index;
+      const d = galleryData[index];
+      lbImg.src           = d.src;
+      lbImg.alt           = d.alt;
+      lbCat.textContent   = d.category;
+      lbTitle.textContent = d.title;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    cells.forEach((cell, i) => cell.addEventListener('click', () => openLightbox(i)));
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+
+    document.getElementById('lb-prev').addEventListener('click', e => {
+      e.stopPropagation();
+      openLightbox((currentIndex - 1 + galleryData.length) % galleryData.length);
+    });
+
+    document.getElementById('lb-next').addEventListener('click', e => {
+      e.stopPropagation();
+      openLightbox((currentIndex + 1) % galleryData.length);
+    });
+
+    lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  openLightbox((currentIndex - 1 + galleryData.length) % galleryData.length);
+      if (e.key === 'ArrowRight') openLightbox((currentIndex + 1) % galleryData.length);
+    });
+  </script>
+
+</body>
+</html>
