@@ -565,6 +565,186 @@
     @media (max-width: 480px) {
       .lightbox-prev, .lightbox-next { display: none; }
     }
+
+    /* ── POPUP ── */
+    #dg-popup-overlay {
+      position: fixed; inset: 0; z-index: 9998;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(6px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #dg-popup-overlay.active { opacity: 1; pointer-events: all; }
+
+    #dg-popup {
+      position: fixed; z-index: 9999;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -54%);
+      width: min(620px, 94vw);
+      background: #0a0a0a;
+      border: 1px solid rgba(201,168,76,0.35);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      overflow: hidden;
+    }
+
+    #dg-popup.active {
+      opacity: 1; pointer-events: all;
+      transform: translate(-50%, -50%);
+    }
+
+    .popup-top {
+      background: linear-gradient(135deg, #0e0e0e 0%, #161616 100%);
+      padding: 2.5rem 2.5rem 1.5rem;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      position: relative;
+    }
+
+    .popup-top::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, transparent, #c9a84c, transparent);
+    }
+
+    .popup-logo {
+      width: 80px; height: auto;
+      margin-bottom: 1.2rem; display: block;
+    }
+
+    .popup-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.42rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: #c9a84c; margin-bottom: 0.6rem;
+    }
+
+    .popup-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: 0.08em; color: #ede9e1;
+      line-height: 1.05; margin-bottom: 0.3rem;
+    }
+
+    .popup-title em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 200;
+      color: #e2c27a; display: block;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+    }
+
+    .popup-perks {
+      list-style: none; margin-top: 1rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+
+    .popup-perks li {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.5rem; letter-spacing: 0.1em;
+      color: #8a8078;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+
+    .popup-perks li::before {
+      content: ''; width: 5px; height: 5px;
+      background: #c9a84c; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .popup-form-wrap { padding: 0; }
+
+    .popup-form-wrap iframe {
+      width: 100% !important;
+      border: none !important;
+      display: block;
+      background: #0a0a0a;
+      min-height: 180px;
+    }
+
+    /* Thank you panel — shown after subscribe */
+    .popup-thankyou {
+      display: none;
+      padding: 2.5rem;
+      text-align: center;
+      background: linear-gradient(135deg, #0e0e0e 0%, #161616 100%);
+    }
+
+    .popup-thankyou.visible { display: block; }
+
+    .thankyou-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.42rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: #c9a84c; margin-bottom: 0.8rem;
+    }
+
+    .thankyou-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: 0.08em; color: #ede9e1;
+      line-height: 1.05; margin-bottom: 0.4rem;
+    }
+
+    .thankyou-title em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 200;
+      color: #e2c27a; display: block;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    }
+
+    .thankyou-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-style: italic; font-weight: 200;
+      color: #8a8078; line-height: 1.7; margin-bottom: 1.8rem;
+    }
+
+    .thankyou-gift {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #080808; background: #c9a84c;
+      padding: 0.9rem 2rem; text-decoration: none;
+      transition: background 0.3s; margin-bottom: 1rem;
+    }
+
+    .thankyou-gift:hover { background: #e2c27a; }
+
+    .popup-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none;
+      color: #6a6560; cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s; padding: 0.3rem 0.5rem;
+    }
+
+    .popup-close:hover { color: #c9a84c; }
+
+    .popup-footer {
+      padding: 0.8rem 2.5rem 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .popup-footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.4rem; letter-spacing: 0.1em;
+      color: #4a4540; text-align: center;
+      cursor: pointer; transition: color 0.3s;
+    }
+
+    .popup-footer p:hover { color: #6a6560; }
+
+    @media (max-width: 768px) {
+      #dg-popup {
+        width: 96vw; max-height: 92vh;
+        overflow-y: auto;
+      }
+      .popup-top { padding: 1.8rem 1.5rem 1.2rem; }
+      .popup-logo { width: 60px; }
+      .popup-title { font-size: 1.3rem; }
+      .popup-title em { font-size: 1rem; }
+      .popup-perks li { font-size: 0.55rem; }
+      .popup-form-wrap iframe { min-height: 220px; }
+      .popup-footer { padding: 0.8rem 1.5rem 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -902,16 +1082,83 @@
     </div>
   </div>
 
+  <!-- DAILY GRIND SET LIFE POPUP -->
+  <div id="dg-popup-overlay" onclick="closePopup()"></div>
+  <div id="dg-popup" role="dialog" aria-modal="true" aria-label="Daily Grind Set Life Newsletter">
+
+    <!-- SUBSCRIBE PANEL -->
+    <div id="popup-subscribe-panel">
+      <div class="popup-top">
+        <button class="popup-close" onclick="closePopup()" aria-label="Close">Close &times;</button>
+        <img
+          src="https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/DailyGrindPrimaryLogo.PNG"
+          alt="Daily Grind" class="popup-logo"
+        />
+        <div class="popup-label">Join the Inner Circle</div>
+        <h2 class="popup-title">
+          Daily Grind Set Life
+          <em>The newsletter for creatives who are serious about the work.</em>
+        </h2>
+        <ul class="popup-perks">
+          <li>3 Premiere Pro presets — free on signup</li>
+          <li>Exclusive op-ed: Being a Visual Creative in Bureaucratic Spaces</li>
+          <li>Early access to seasonal &amp; themed shoot sessions</li>
+          <li>Monthly freebies, resources &amp; behind the lens dispatches</li>
+        </ul>
+      </div>
+      <div class="popup-form-wrap">
+        <iframe
+          width="100%"
+          height="200"
+          src="https://d79d229e.sibforms.com/serve/MUIFALuEHMRT5OfvWNYpIayjS0tBI3kaTyUrN-qqjAZ0Q7T2PLMi7VpU-PTqazVbNnZwHI3oVtR1FcJ-17xkmrwfnp-k3TekKiQy_TFKFHSgZmHFIev-9K7fayO6A_bZkhueR_P2dw7jtr6g9O806eQuWhcP2Kwzowj2UnJlb0njH40EwA9J8oLRpBEpZQhV5Ce_BT4s2JjblzyqTw=="
+          frameborder="0"
+          scrolling="auto"
+          allowfullscreen
+          style="display:block;background:#0a0a0a;"
+          id="popup-brevo-iframe"
+        ></iframe>
+      </div>
+      <div class="popup-footer">
+        <p onclick="closePopup()">No thanks, I am not interested in free resources</p>
+      </div>
+    </div>
+
+    <!-- THANK YOU PANEL — shown after subscribe -->
+    <div id="popup-thankyou-panel" class="popup-thankyou">
+      <button class="popup-close" onclick="closePopup()" aria-label="Close" style="position:absolute;top:1rem;right:1rem;">Close &times;</button>
+      <div class="thankyou-label">Welcome to the Inner Circle</div>
+      <h2 class="thankyou-title">
+        You're In.
+        <em>Your first giveaway is waiting.</em>
+      </h2>
+      <p class="thankyou-desc">
+        Check your inbox for the confirmation email. Once confirmed,
+        your 3 Premiere Pro presets and exclusive op-ed will be on their way.
+        This is just the beginning.
+      </p>
+      <a href="#" class="thankyou-gift" id="gift-link" target="_blank">
+        Claim Your Free Presets
+      </a>
+      <div class="popup-footer" style="border-top:1px solid rgba(255,255,255,0.04);margin-top:1rem;">
+        <p onclick="closePopup()">Return to the gallery</p>
+      </div>
+    </div>
+
+  </div>
+
   <script>
+    // Nav scroll shrink
     const nav = document.getElementById('main-nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     });
 
+    // Mobile nav
     document.getElementById('nav-toggle').addEventListener('click', () => {
       document.getElementById('nav-links').classList.toggle('open');
     });
 
+    // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -971,6 +1218,41 @@
       if (e.key === 'Escape')     closeLightbox();
       if (e.key === 'ArrowLeft')  openLightbox((currentIndex - 1 + galleryData.length) % galleryData.length);
       if (e.key === 'ArrowRight') openLightbox((currentIndex + 1) % galleryData.length);
+    });
+
+    // ── POPUP LOGIC ──
+    function openPopup() {
+      document.getElementById('dg-popup-overlay').classList.add('active');
+      document.getElementById('dg-popup').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      sessionStorage.setItem('dgPopupSeen', 'true');
+    }
+
+    function closePopup() {
+      document.getElementById('dg-popup-overlay').classList.remove('active');
+      document.getElementById('dg-popup').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Listen for successful Brevo form submission inside iframe
+    window.addEventListener('message', function(e) {
+      if (e.data && (e.data.type === 'sib_form_submit' || e.data === 'sib_form_submit')) {
+        showThankYou();
+      }
+    });
+
+    function showThankYou() {
+      document.getElementById('popup-subscribe-panel').style.display = 'none';
+      document.getElementById('popup-thankyou-panel').classList.add('visible');
+      // Update gift link when you have the URL ready
+      document.getElementById('gift-link').href = 'https://drive.google.com/drive/folders/1TxGRz4fcX6xRF6D7GssrkZFrW-YJ_lQM?usp=drive_link';
+    }
+
+    // Fire popup 5 seconds after page load — once per session
+    window.addEventListener('load', function() {
+      if (!sessionStorage.getItem('dgPopupSeen')) {
+        setTimeout(openPopup, 5000);
+      }
     });
   </script>
 
