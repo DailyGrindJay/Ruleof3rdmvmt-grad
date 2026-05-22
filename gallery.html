@@ -659,14 +659,59 @@
       background: #c9a84c; border-radius: 50%; flex-shrink: 0;
     }
 
-    .popup-form-wrap { padding: 0; }
+    .popup-form-wrap { padding: 1.5rem 2.5rem 0.5rem; }
 
-    .popup-form-wrap iframe {
-      width: 100% !important;
-      border: none !important;
-      display: block;
-      background: #0a0a0a;
-      min-height: 180px;
+    .popup-form-wrap form { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .popup-field-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .popup-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.38rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .popup-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 300;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.3s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .popup-input::placeholder { color: var(--muted); font-style: italic; }
+    .popup-input:focus { border-color: var(--gold); background: rgba(201,168,76,0.04); }
+
+    .popup-submit {
+      width: 100%;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #080808; background: var(--gold);
+      border: none; padding: 1rem; cursor: pointer;
+      transition: background 0.3s; margin-top: 0.4rem;
+    }
+
+    .popup-submit:hover { background: var(--gold-light); }
+    .popup-submit:disabled { background: var(--muted); cursor: not-allowed; opacity: 0.7; }
+
+    .popup-form-status {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.4rem; letter-spacing: 0.15em;
+      text-align: center; padding: 0.4rem 0;
+      display: none;
+    }
+
+    .popup-form-status.error { color: #e07070; display: block; }
+    .popup-form-status.sending { color: var(--muted); display: block; }
+
+    @media (max-width: 768px) {
+      .popup-form-wrap { padding: 1.2rem 1.5rem 0.5rem; }
     }
 
     /* Thank you panel — shown after subscribe */
@@ -1134,16 +1179,35 @@
         </ul>
       </div>
       <div class="popup-form-wrap">
-        <iframe
-          width="100%"
-          height="200"
-          src="https://d79d229e.sibforms.com/serve/MUIFALuEHMRT5OfvWNYpIayjS0tBI3kaTyUrN-qqjAZ0Q7T2PLMi7VpU-PTqazVbNnZwHI3oVtR1FcJ-17xkmrwfnp-k3TekKiQy_TFKFHSgZmHFIev-9K7fayO6A_bZkhueR_P2dw7jtr6g9O806eQuWhcP2Kwzowj2UnJlb0njH40EwA9J8oLRpBEpZQhV5Ce_BT4s2JjblzyqTw=="
-          frameborder="0"
-          scrolling="auto"
-          allowfullscreen
-          style="display:block;background:#0a0a0a;"
-          id="popup-brevo-iframe"
-        ></iframe>
+        <form id="dg-signup-form" novalidate>
+          <div class="popup-field-group">
+            <label class="popup-label" for="dg-firstname">First Name</label>
+            <input
+              class="popup-input"
+              type="text"
+              id="dg-firstname"
+              name="firstname"
+              placeholder="Your first name"
+              autocomplete="given-name"
+            />
+          </div>
+          <div class="popup-field-group">
+            <label class="popup-label" for="dg-email">Email Address</label>
+            <input
+              class="popup-input"
+              type="email"
+              id="dg-email"
+              name="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="popup-form-status" id="dg-form-status"></div>
+          <button class="popup-submit" type="submit" id="dg-submit-btn">
+            Join &amp; Claim Free Presets
+          </button>
+        </form>
       </div>
       <div class="popup-footer">
         <p onclick="closePopup()">No thanks, I am not interested in free resources</p>
@@ -1261,19 +1325,67 @@
       document.body.style.overflow = '';
     }
 
-    // Listen for successful Brevo form submission inside iframe
-    window.addEventListener('message', function(e) {
-      if (e.data && (e.data.type === 'sib_form_submit' || e.data === 'sib_form_submit')) {
-        showThankYou();
-      }
-    });
-
     function showThankYou() {
       document.getElementById('popup-subscribe-panel').style.display = 'none';
       document.getElementById('popup-thankyou-panel').classList.add('visible');
-      // Update gift link when you have the URL ready
       document.getElementById('gift-link').href = 'https://drive.google.com/drive/folders/1TxGRz4fcX6xRF6D7GssrkZFrW-YJ_lQM?usp=drive_link';
     }
+
+    // Custom form submission to Brevo API
+    document.getElementById('dg-signup-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email     = document.getElementById('dg-email').value.trim();
+      const firstname = document.getElementById('dg-firstname').value.trim();
+      const status    = document.getElementById('dg-form-status');
+      const btn       = document.getElementById('dg-submit-btn');
+
+      if (!email || !email.includes('@')) {
+        status.textContent = 'Please enter a valid email address.';
+        status.className = 'popup-form-status error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Joining...';
+      status.textContent = 'One moment...';
+      status.className = 'popup-form-status sending';
+
+      try {
+        const res = await fetch('https://api.brevo.com/v3/contacts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'api-key': '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'
+          },
+          body: JSON.stringify({
+            email: email,
+            attributes: { FIRSTNAME: firstname },
+            listIds: [3],
+            updateEnabled: true
+          })
+        });
+
+        if (res.status === 201 || res.status === 204 || res.status === 200) {
+          showThankYou();
+        } else {
+          const data = await res.json();
+          if (data.code === 'duplicate_parameter') {
+            showThankYou();
+          } else {
+            status.textContent = 'Something went wrong. Please try again.';
+            status.className = 'popup-form-status error';
+            btn.disabled = false;
+            btn.textContent = 'Join & Claim Free Presets';
+          }
+        }
+      } catch (err) {
+        status.textContent = 'Connection error. Please try again.';
+        status.className = 'popup-form-status error';
+        btn.disabled = false;
+        btn.textContent = 'Join & Claim Free Presets';
+      }
+    });
 
     // Fire popup 5 seconds after page load — once per session
     window.addEventListener('load', function() {
