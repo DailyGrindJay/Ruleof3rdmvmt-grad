@@ -3,383 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tumbleweave – Official Festival Selection | Rule of 3rd Mvmt</title>
-  <meta name="description" content="Tumbleweave, a satirical mockumentary short film written and directed by Jay Franklin, has been selected for the International Movie Awards. A Rule of 3rd Mvmt production." />
+  <title>Tumbleweave – Award-Winning Film | Rule of 3rd Mvmt</title>
+  <meta name="description" content="Tumbleweave wins Best Indie Short and Best Dark Comedy at the International Movie Awards. A Rule of 3rd Mvmt production directed by Jay Franklin." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --gold: #c9a84c; --gold-light: #e2c27a; --dark: #080808;
-      --surface: #0f0f0f; --surface-2: #161616;
-      --text: #ede9e1; --muted: #6a6560; --rule: rgba(201,168,76,0.2);
+      --gold:#c9a84c;--gold-light:#e2c27a;--dark:#080808;
+      --surface:#0f0f0f;--surface-2:#161616;
+      --text:#ede9e1;--muted:#6a6560;--rule:rgba(201,168,76,0.2);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--dark); color: var(--text); font-family: 'Cormorant Garamond', serif; font-weight: 300; overflow-x: hidden; line-height: 1.7; }
-    body::before {
-      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity: 0.5; mix-blend-mode: overlay;
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--dark);color:var(--text);font-family:'Cormorant Garamond',serif;font-weight:300;overflow-x:hidden;line-height:1.7}
+    body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");opacity:0.5;mix-blend-mode:overlay}
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 1.4rem 3rem; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(8,8,8,0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--rule);
-    }
-    .nav-brand { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--gold); }
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(8,8,8,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+    .nav-brand{font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);text-decoration:none}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:'Space Mono',monospace;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s}
+    .nav-links a:hover{color:var(--gold)}
 
-    /* PRESS BADGE HERO */
-    .hero {
-      min-height: 100vh; position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      padding: 8rem 3rem 4rem;
-    }
+    /* HERO */
+    .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8rem 3rem 4rem}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(201,168,76,0.08) 0%,transparent 65%),radial-gradient(ellipse 40% 50% at 10% 90%,rgba(201,168,76,0.04) 0%,transparent 55%),var(--dark)}
+    .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;width:100%}
 
-    .hero-bg {
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 70% 60% at 50% 40%, rgba(201,168,76,0.07) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 50% at 10% 90%, rgba(201,168,76,0.04) 0%, transparent 55%),
-        var(--dark);
-    }
+    .poster-wrap{position:relative}
+    .poster-frame{position:relative;overflow:hidden;border:1px solid rgba(201,168,76,0.25)}
+    .poster-frame img{width:100%;height:auto;display:block;filter:contrast(1.05);transition:transform 0.8s cubic-bezier(0.16,1,0.3,1)}
+    .poster-frame:hover img{transform:scale(1.03)}
+    .poster-badge{position:absolute;top:1.2rem;left:1.2rem;background:var(--gold);color:var(--dark);font-family:'Space Mono',monospace;font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.4rem 0.8rem}
+    .poster-corner-tr{position:absolute;top:-8px;right:-8px;width:30px;height:30px;border-top:2px solid var(--gold);border-right:2px solid var(--gold);opacity:0.6}
+    .poster-corner-bl{position:absolute;bottom:-8px;left:-8px;width:30px;height:30px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold);opacity:0.4}
 
-    .hero-inner {
-      position: relative; z-index: 2;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 5rem; align-items: center; max-width: 1100px; width: 100%;
-    }
+    .press-label{font-family:'Space Mono',monospace;font-size:0.46rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem}
+    .press-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+    .film-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,6rem);letter-spacing:0.08em;line-height:0.95;color:var(--text);margin-bottom:0.5rem}
+    .film-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.4rem);font-style:italic;font-weight:200;color:var(--gold-light);margin-bottom:1.5rem;letter-spacing:0.06em}
 
-    /* POSTER */
-    .poster-wrap {
-      position: relative;
-    }
+    /* AWARD BADGES IN HERO */
+    .hero-awards{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2rem}
+    .hero-award-badge{display:flex;align-items:center;gap:0.8rem;border:1px solid rgba(201,168,76,0.4);padding:0.7rem 1.2rem;background:rgba(201,168,76,0.06)}
+    .award-star{color:var(--gold);font-size:1rem;flex-shrink:0}
+    .award-badge-text{}
+    .award-badge-category{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--text);display:block}
+    .award-badge-type{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted)}
 
-    .poster-frame {
-      position: relative; overflow: hidden;
-      border: 1px solid rgba(201,168,76,0.25);
-    }
+    .film-meta{display:flex;gap:2rem;margin-bottom:2rem;flex-wrap:wrap}
+    .meta-label{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem}
+    .meta-value{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--text)}
 
-    .poster-frame img {
-      width: 100%; height: auto; display: block;
-      filter: contrast(1.05);
-      transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
+    .hero-btns{display:flex;gap:0.8rem;flex-wrap:wrap}
+    .btn-primary{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Space Mono',monospace;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--gold);padding:0.9rem 1.8rem;text-decoration:none;transition:background 0.3s}
+    .btn-primary:hover{background:var(--gold-light)}
+    .btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Space Mono',monospace;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:0.9rem 1.8rem;text-decoration:none;transition:all 0.3s}
+    .btn-secondary:hover{background:var(--gold);color:var(--dark)}
 
-    .poster-frame:hover img { transform: scale(1.03); }
+    .gold-rule{width:100%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0.25;position:relative;z-index:1}
 
-    .poster-badge {
-      position: absolute; top: 1.2rem; left: 1.2rem;
-      background: var(--gold); color: var(--dark);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.42rem; letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 0.4rem 0.8rem;
-    }
+    /* AWARDS SHOWCASE */
+    .awards-section{position:relative;z-index:1;background:var(--surface);padding:6rem 3rem}
+    .awards-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0.25}
+    .awards-header{text-align:center;margin-bottom:3.5rem}
+    .section-label{font-family:'Space Mono',monospace;font-size:0.46rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block}
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3rem);letter-spacing:0.07em;color:var(--text);line-height:1.05}
+    .section-title em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:200;color:var(--gold-light);display:block;font-size:clamp(1.4rem,2.5vw,2rem)}
 
-    .poster-corner-tr {
-      position: absolute; top: -8px; right: -8px;
-      width: 30px; height: 30px;
-      border-top: 2px solid var(--gold); border-right: 2px solid var(--gold);
-      opacity: 0.6;
-    }
-
-    .poster-corner-bl {
-      position: absolute; bottom: -8px; left: -8px;
-      width: 30px; height: 30px;
-      border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold);
-      opacity: 0.4;
-    }
-
-    /* HERO CONTENT */
-    .hero-content {}
-
-    .press-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.46rem; letter-spacing: 0.32em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem;
-      display: flex; align-items: center; gap: 0.8rem;
-    }
-
-    .press-label::before {
-      content: ''; width: 30px; height: 1px; background: var(--gold);
-    }
-
-    .film-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 7vw, 6rem);
-      letter-spacing: 0.08em; line-height: 0.95;
-      color: var(--text); margin-bottom: 0.5rem;
-    }
-
-    .film-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 2vw, 1.4rem);
-      font-style: italic; font-weight: 200;
-      color: var(--gold-light); margin-bottom: 2rem;
-      letter-spacing: 0.06em;
-    }
-
-    .festival-badge {
-      display: inline-flex; align-items: center; gap: 0.8rem;
-      border: 1px solid rgba(201,168,76,0.4);
-      padding: 0.8rem 1.4rem; margin-bottom: 2rem;
-      background: rgba(201,168,76,0.05);
-    }
-
-    .festival-star {
-      color: var(--gold); font-size: 1rem;
-    }
-
-    .festival-text {}
-
-    .festival-text-top {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.42rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gold); display: block; margin-bottom: 0.2rem;
-    }
-
-    .festival-text-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem; font-weight: 400; color: var(--text);
-    }
-
-    .film-meta {
-      display: flex; gap: 2rem; margin-bottom: 2rem;
-    }
-
-    .meta-item {}
-
-    .meta-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.38rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.2rem;
-    }
-
-    .meta-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem; color: var(--text);
-    }
-
-    .hero-btns {
-      display: flex; gap: 0.8rem; flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--dark); background: var(--gold);
-      padding: 0.9rem 1.8rem; text-decoration: none; transition: background 0.3s;
-    }
-    .btn-primary:hover { background: var(--gold-light); }
-
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.48rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--gold); border: 1px solid var(--gold);
-      padding: 0.9rem 1.8rem; text-decoration: none; transition: all 0.3s;
-    }
-    .btn-secondary:hover { background: var(--gold); color: var(--dark); }
-
-    /* GOLD RULE */
-    .gold-rule { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0.25; position: relative; z-index: 1; }
+    .awards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1000px;margin:0 auto}
+    .award-card{position:relative;overflow:hidden;border:1px solid rgba(201,168,76,0.2);background:var(--surface-2);transition:border-color 0.3s}
+    .award-card:hover{border-color:rgba(201,168,76,0.5)}
+    .award-card img{width:100%;height:auto;display:block;filter:contrast(1.02);transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)}
+    .award-card:hover img{transform:scale(1.03)}
+    .award-card-label{padding:1rem 1.2rem;border-top:1px solid rgba(201,168,76,0.15);text-align:center}
+    .award-card-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--text);display:block;margin-bottom:0.2rem}
+    .award-card-type{font-family:'Space Mono',monospace;font-size:0.38rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)}
 
     /* SYNOPSIS */
-    .synopsis-section {
-      position: relative; z-index: 1;
-      padding: 6rem 0;
-      display: grid; grid-template-columns: 1fr 2fr;
-      gap: 5rem; max-width: 1100px; margin: 0 auto;
-      padding-left: 3rem; padding-right: 3rem;
-    }
+    .synopsis-section{position:relative;z-index:1;padding:6rem 3rem;display:grid;grid-template-columns:1fr 2fr;gap:5rem;max-width:1100px;margin:0 auto}
+    .synopsis-text{font-size:clamp(1.05rem,1.4vw,1.2rem);color:#9a9088;line-height:2;margin-bottom:1.5rem}
+    .synopsis-text strong{color:var(--gold-light);font-weight:400;font-style:italic}
+    .synopsis-quote{border-left:2px solid var(--gold);padding:1.2rem 1.5rem;margin:2rem 0;background:rgba(201,168,76,0.04)}
+    .synopsis-quote p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,1.6vw,1.4rem);font-style:italic;font-weight:200;color:var(--text);line-height:1.7}
 
-    .synopsis-left {}
+    /* VIDEO */
+    .video-section{position:relative;z-index:1;background:var(--surface);padding:5rem 3rem}
+    .video-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);opacity:0.25}
+    .video-inner{max-width:900px;margin:0 auto}
+    .video-header{text-align:center;margin-bottom:2.5rem}
+    .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border:1px solid rgba(201,168,76,0.2)}
+    .video-wrap video{position:absolute;top:0;left:0;width:100%;height:100%;background:#000}
 
-    .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.46rem; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.2rem; display: block;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      letter-spacing: 0.07em; color: var(--text); line-height: 1.05;
-    }
-
-    .section-title em {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-weight: 200;
-      color: var(--gold-light); display: block;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-    }
-
-    .synopsis-right {}
-
-    .synopsis-text {
-      font-size: clamp(1.05rem, 1.4vw, 1.2rem);
-      color: #9a9088; line-height: 2; margin-bottom: 1.5rem;
-    }
-
-    .synopsis-text strong {
-      color: var(--gold-light); font-weight: 400; font-style: italic;
-    }
-
-    .synopsis-quote {
-      border-left: 2px solid var(--gold);
-      padding: 1.2rem 1.5rem;
-      margin: 2rem 0;
-      background: rgba(201,168,76,0.04);
-    }
-
-    .synopsis-quote p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 1.6vw, 1.4rem);
-      font-style: italic; font-weight: 200;
-      color: var(--text); line-height: 1.7;
-    }
-
-    /* VIDEO SECTION */
-    .video-section {
-      position: relative; z-index: 1;
-      background: var(--surface);
-      padding: 5rem 3rem;
-    }
-
-    .video-section::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold), transparent);
-      opacity: 0.25;
-    }
-
-    .video-inner { max-width: 900px; margin: 0 auto; }
-
-    .video-header { text-align: center; margin-bottom: 2.5rem; }
-
-    .video-wrap {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      border: 1px solid rgba(201,168,76,0.2);
-    }
-
-    .video-wrap video {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: #000;
-    }
-
-    /* PRESS RELEASE TEXT */
-    .press-section {
-      position: relative; z-index: 1;
-      padding: 6rem 3rem;
-      max-width: 800px; margin: 0 auto;
-    }
-
-    .press-date {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.44rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.8rem;
-    }
-
-    .press-headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      letter-spacing: 0.07em; color: var(--text);
-      line-height: 1.1; margin-bottom: 0.5rem;
-    }
-
-    .press-subhead {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1rem, 1.5vw, 1.2rem);
-      font-style: italic; color: var(--gold-light);
-      margin-bottom: 2.5rem; padding-bottom: 2rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .press-body {
-      font-size: clamp(1rem, 1.3vw, 1.1rem);
-      color: #9a9088; line-height: 2; margin-bottom: 1.5rem;
-    }
-
-    .press-body strong { color: var(--text); font-weight: 400; }
-
-    .press-contact {
-      margin-top: 3rem; padding-top: 2rem;
-      border-top: 1px solid var(--rule);
-    }
-
-    .press-contact-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.44rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 0.8rem;
-    }
-
-    .press-contact-info {
-      font-size: 1rem; color: #8a8078; line-height: 1.8;
-    }
-
-    .press-contact-info a { color: var(--gold-light); text-decoration: none; }
-    .press-contact-info a:hover { text-decoration: underline; }
+    /* PRESS RELEASE */
+    .press-section{position:relative;z-index:1;padding:6rem 3rem;max-width:800px;margin:0 auto}
+    .press-date{font-family:'Space Mono',monospace;font-size:0.44rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem}
+    .press-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.6rem);letter-spacing:0.07em;color:var(--text);line-height:1.1;margin-bottom:0.5rem}
+    .press-subhead{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,1.5vw,1.2rem);font-style:italic;color:var(--gold-light);margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--rule)}
+    .press-body{font-size:clamp(1rem,1.3vw,1.1rem);color:#9a9088;line-height:2;margin-bottom:1.5rem}
+    .press-body strong{color:var(--text);font-weight:400}
+    .press-contact{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule)}
+    .press-contact-label{font-family:'Space Mono',monospace;font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+    .press-contact-info{font-size:1rem;color:#8a8078;line-height:1.8}
+    .press-contact-info a{color:var(--gold-light);text-decoration:none}
+    .press-contact-info a:hover{text-decoration:underline}
 
     /* CLOSING */
-    .closing {
-      position: relative; z-index: 1;
-      padding: 6rem 3rem; text-align: center;
-      background: var(--surface-2);
-    }
+    .closing{position:relative;z-index:1;padding:6rem 3rem;text-align:center;background:var(--surface-2)}
+    .closing::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1px;height:4rem;background:linear-gradient(to bottom,transparent,var(--gold))}
+    .closing-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:200;font-style:italic;color:var(--text);line-height:1.3;margin-bottom:0.8rem}
+    .closing-title strong{font-style:normal;font-weight:300;color:var(--gold-light)}
+    .closing-sub{font-family:'Space Mono',monospace;font-size:0.46rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:2.5rem}
+    .closing-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 
-    .closing::before {
-      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 1px; height: 4rem;
-      background: linear-gradient(to bottom, transparent, var(--gold));
-    }
+    footer{border-top:1px solid var(--rule);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+    .footer-brand{font-family:'Space Mono',monospace;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+    .footer-copy{font-family:'Space Mono',monospace;font-size:0.44rem;letter-spacing:0.12em;color:var(--muted)}
 
-    .closing-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      font-weight: 200; font-style: italic;
-      color: var(--text); line-height: 1.3; margin-bottom: 0.8rem;
-    }
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.9s ease,transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
 
-    .closing-title strong { font-style: normal; font-weight: 300; color: var(--gold-light); }
-
-    .closing-sub {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.46rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 2.5rem;
-    }
-
-    .closing-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--rule); padding: 2.5rem 3rem;
-      display: flex; justify-content: space-between; align-items: center;
-      position: relative; z-index: 1;
-    }
-    .footer-brand { font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
-    .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.44rem; letter-spacing: 0.12em; color: var(--muted); }
-
-    /* REVEAL */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      nav { padding: 1.2rem 1.5rem; } .nav-links { gap: 1.5rem; }
-      .hero { padding: 7rem 1.5rem 3rem; }
-      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .synopsis-section { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
-      .video-section { padding: 4rem 1.5rem; }
-      .press-section { padding: 4rem 1.5rem; }
-      .closing { padding: 4rem 1.5rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
-      .film-meta { gap: 1.2rem; flex-wrap: wrap; }
+    @media(max-width:900px){
+      nav{padding:1.2rem 1.5rem}.nav-links{gap:1.2rem}
+      .hero{padding:7rem 1.5rem 3rem}
+      .hero-inner{grid-template-columns:1fr;gap:3rem}
+      .awards-grid{grid-template-columns:1fr;max-width:400px}
+      .synopsis-section{grid-template-columns:1fr;gap:2rem;padding:4rem 1.5rem}
+      .video-section{padding:4rem 1.5rem}
+      .press-section{padding:4rem 1.5rem}
+      .closing{padding:4rem 1.5rem}
+      .awards-section{padding:4rem 1.5rem}
+      footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem}
     }
   </style>
 </head>
@@ -389,7 +143,6 @@
     <a href="https://ruleof3rdmvmt.com" class="nav-brand">Rule of 3rd Mvmt</a>
     <ul class="nav-links">
       <li><a href="https://ruleof3rdmvmt.com/gallery/">Gallery</a></li>
-      <li><a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/press.html">Film Work</a></li>
       <li><a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/Services.html">Services</a></li>
       <li><a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/curator.html">The Curator</a></li>
       <li><a href="https://dailygrindjay.github.io/Ruleof3rdmvmt-grad/connect.html">Connect</a></li>
@@ -407,22 +160,38 @@
             src="https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/Tumbleweave%20Poster.jpg"
             alt="Tumbleweave Film Poster"
           />
-          <div class="poster-badge">Official Selection</div>
+          <div class="poster-badge">Award Winner</div>
         </div>
         <div class="poster-corner-tr"></div>
         <div class="poster-corner-bl"></div>
       </div>
 
       <div class="hero-content">
-        <div class="press-label reveal">Press &nbsp;&middot;&nbsp; Film Festival</div>
+        <div class="press-label reveal">Press &nbsp;&middot;&nbsp; Film Awards</div>
         <h1 class="film-title reveal">Tumbleweave</h1>
         <div class="film-subtitle reveal">A Mockumentary Short Film</div>
 
-        <div class="festival-badge reveal">
-          <div class="festival-star">&#9733;</div>
-          <div class="festival-text">
-            <span class="festival-text-top">Official Selection</span>
-            <span class="festival-text-name">International Movie Awards</span>
+        <div class="hero-awards reveal">
+          <div class="hero-award-badge">
+            <div class="award-star">&#9733;</div>
+            <div class="award-badge-text">
+              <span class="award-badge-category">Best Indie Short</span>
+              <span class="award-badge-type">International Movie Awards</span>
+            </div>
+          </div>
+          <div class="hero-award-badge">
+            <div class="award-star">&#9733;</div>
+            <div class="award-badge-text">
+              <span class="award-badge-category">Best Dark Comedy</span>
+              <span class="award-badge-type">Jury Award &nbsp;&middot;&nbsp; International Movie Awards</span>
+            </div>
+          </div>
+          <div class="hero-award-badge">
+            <div class="award-star">&#9733;</div>
+            <div class="award-badge-text">
+              <span class="award-badge-category">Best Actor in an Indie Film</span>
+              <span class="award-badge-type">Award of Merit &nbsp;&middot;&nbsp; Mike C. Scott</span>
+            </div>
           </div>
         </div>
 
@@ -456,16 +225,61 @@
 
   <div class="gold-rule"></div>
 
+  <!-- AWARDS SHOWCASE -->
+  <section class="awards-section">
+    <div class="awards-header">
+      <span class="section-label reveal">Recognition</span>
+      <h2 class="section-title reveal">
+        Three Awards.
+        <em>One Film. One Vision.</em>
+      </h2>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card reveal">
+        <img
+          src="https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/award-best-indie-short.webp"
+          alt="Best Indie Short Award"
+        />
+        <div class="award-card-label">
+          <span class="award-card-title">Best Indie Short</span>
+          <span class="award-card-type">Jay Franklin</span>
+        </div>
+      </div>
+      <div class="award-card reveal">
+        <img
+          src="https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/award-best-dark-comedy.webp"
+          alt="Best Dark Comedy Award"
+        />
+        <div class="award-card-label">
+          <span class="award-card-title">Best Dark Comedy</span>
+          <span class="award-card-type">Jury Award &nbsp;&middot;&nbsp; Jay Franklin</span>
+        </div>
+      </div>
+      <div class="award-card reveal">
+        <img
+          src="https://cdn.jsdelivr.net/gh/DailyGrindJay/Ruleof3rdmvmt-grad@main/award-best-actor.webp"
+          alt="Best Actor Award"
+        />
+        <div class="award-card-label">
+          <span class="award-card-title">Best Actor in an Indie Film</span>
+          <span class="award-card-type">Award of Merit &nbsp;&middot;&nbsp; Mike C. Scott</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-rule"></div>
+
   <!-- SYNOPSIS -->
   <section class="synopsis-section">
-    <div class="synopsis-left">
+    <div>
       <span class="section-label reveal">The Film</span>
       <h2 class="section-title reveal">
         A Story No One
         <em>Thought to Tell.</em>
       </h2>
     </div>
-    <div class="synopsis-right">
+    <div>
       <p class="synopsis-text reveal">
         Somewhere between the sidewalk and the storm drain, an ecosystem thrives unnoticed.
         <strong>Tumbleweave</strong> is a satirical mockumentary that follows Dr. La'ce Fruont,
@@ -509,46 +323,45 @@
   <!-- PRESS RELEASE -->
   <section class="press-section">
     <div class="press-date reveal">For Immediate Release &nbsp;&middot;&nbsp; 2026</div>
-    <h2 class="press-headline reveal">Rule of 3rd Mvmt Short Film Selected for International Movie Awards</h2>
+    <h2 class="press-headline reveal">Tumbleweave Wins Three Awards at the International Movie Awards</h2>
     <div class="press-subhead reveal">
-      Satirical mockumentary Tumbleweave earns festival recognition,
-      marking a milestone for New Jersey independent filmmaker Jay Franklin.
+      Rule of 3rd Mvmt short film takes Best Indie Short and Best Dark Comedy.
+      Lead actor Mike C. Scott receives Award of Merit for Best Actor in an Indie Film.
     </div>
 
     <p class="press-body reveal">
       <strong>Roselle, New Jersey</strong> — Rule of 3rd Mvmt, the New Jersey-based film and
-      photography production company founded by filmmaker and cinematographer Jay Franklin,
-      announces that its short film <strong>Tumbleweave</strong> has been selected as an
-      official entry in the International Movie Awards.
+      photography production company founded by filmmaker Jay Franklin, announces that its
+      short film <strong>Tumbleweave</strong> has won three awards at the International Movie
+      Awards, including Best Indie Short and Best Dark Comedy as a Jury Award.
     </p>
 
     <p class="press-body reveal">
-      The film, a satirical mockumentary following fictional urban naturalist Dr. La'ce Fruont
-      as he documents the life cycle of the hair weave across metropolitan streets, blends
-      the formal language of nature documentary filmmaking with absurdist social commentary.
-      The result is a work that is simultaneously comedic, technically precise, and surprisingly
-      resonant in what it reveals about the communities it observes.
+      Lead actor <strong>Mike C. Scott</strong> received an Award of Merit for Best Actor in
+      an Indie Film, recognizing the performance at the center of the film's satirical
+      documentary conceit.
+    </p>
+
+    <p class="press-body reveal">
+      The film, a mockumentary following fictional urban naturalist Dr. La'ce Fruont as he
+      documents the life cycle of the hair weave across metropolitan streets, blends the
+      formal language of nature documentary filmmaking with sharp social observation and
+      controlled absurdity. The result earned recognition across two competitive categories
+      and drew praise for both its conceptual originality and its technical execution.
     </p>
 
     <p class="press-body reveal">
       <strong>Tumbleweave</strong> is part of the Showrunners short film series, an original
-      production from Rule of 3rd Mvmt that demonstrates Franklin's range as both a director
-      and a storyteller capable of working across genre, tone, and subject matter with equal
-      command.
+      production from Rule of 3rd Mvmt. The recognition affirms Franklin's position as one
+      of New Jersey's most distinctive independent filmmakers at a pivotal moment for the
+      state's film industry, with major studios actively establishing production infrastructure
+      across the region.
     </p>
 
     <p class="press-body reveal">
-      "This film started as a question," said Franklin. "What if you treated something completely
-      ordinary like it mattered? The hair weave on the sidewalk. The drain. The fence. What
-      does that environment say? What stories are already there that no one is looking for?
-      That is the work. Finding the story that was always there."
-    </p>
-
-    <p class="press-body reveal">
-      With fourteen years of professional experience spanning broadcast television, political
-      media, commercial brand production, and independent film, Franklin represents a generation
-      of New Jersey filmmakers building serious creative infrastructure in a state increasingly
-      recognized as a major destination for film and television production.
+      "Finding the story that was already there, that is the work," said Franklin. "Tumbleweave
+      started as a question about what we overlook. These awards confirm that the question was
+      worth asking."
     </p>
 
     <div class="press-contact reveal">
@@ -557,7 +370,7 @@
         Jay Franklin &nbsp;&middot;&nbsp; Rule of 3rd Mvmt | Daily Grind<br />
         <a href="mailto:jolonfranklinllc@gmail.com">jolonfranklinllc@gmail.com</a><br />
         <a href="https://ruleof3rdmvmt.com">ruleof3rdmvmt.com</a> &nbsp;&middot;&nbsp;
-        <a href="https://international-movie-awards.getlandingsite.com/" target="_blank">Festival Website</a>
+        <a href="https://international-movie-awards.getlandingsite.com/" target="_blank">International Movie Awards</a>
       </div>
     </div>
   </section>
